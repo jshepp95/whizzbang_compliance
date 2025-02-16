@@ -1,0 +1,16 @@
+paths:
+  project_root: '/home/azureuser/projects/object_detection'
+  data_root: 'data'
+
+model:
+  name: "SIFT_detector"
+  template_paths:
+    1: "brand_assets/raw/nectar_template.jpg"
+    2: "brand_assets/raw/sainsburys_template.jpg"
+
+evaluation:
+  iou_threshold: 0.5
+
+data:
+  annotations_path: 'annotations/multi_class/result.json'
+  img_root: 'annotations/multi_class'
