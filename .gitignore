@@ -1,12 +1,19 @@
+# Old
 archive/
 data/
 detr/
-runs/
-TODO
-experiments/
+
+# Preprocessing
 preprocessing/store_data.py
+TODO
+
+# Experimentation
+runs/
+wandb/
+experiments/
 
 # Datasets
+dvc_storage/
 datasets/*
 !datasets/annotations
 datasets/annotations/*
@@ -14,9 +21,10 @@ datasets/annotations/*
 datasets/annotations/multi_class/*
 !datasets/annotations/multi_class/**/*.dvc
 
+
 # Models
-models/yolo_11/
 models/yolo_detector_lozenge/
+models/yolo_11/*.pt
 models/*.pt
 models/*.onnx
 models/*.pkl
