@@ -13,7 +13,6 @@ class SIFTDetector:
             for class_id, template in templates.items()
         }
         
-        # FLANN parameters
         FLANN_IDX_TREE = 1
         self.index_params = dict(algorithm=FLANN_IDX_TREE, trees=5)
         self.search_params = dict(checks=50)

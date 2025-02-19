@@ -37,11 +37,9 @@ def save_run_results(metrics, failures, run_name, base_dir='runs'):
     run_dir = Path(base_dir) / f"{run_name}_{timestamp}"
     run_dir.mkdir(parents=True, exist_ok=True)
     
-    # Save metrics
     with open(run_dir / 'metrics.json', 'w') as f:
         json.dump(metrics, f, indent=4)
     
-    # Save failures
     with open(run_dir / 'failures.json', 'w') as f:
         json.dump(failures, f, indent=4)
         
@@ -50,11 +48,6 @@ def save_run_results(metrics, failures, run_name, base_dir='runs'):
 def visualize_case(img_data, failure_data, class_id):
     """
     Visualize a failure case
-    
-    Args:
-        img_data: Original image data dictionary containing path/file_name
-        failure_data: Dictionary containing false_positives, false_negatives, low_iou for this image
-        class_id: The class ID being analyzed
     """
     # Read image
     img = cv2.imread(img_data['file_name'])
@@ -82,15 +75,3 @@ def visualize_case(img_data, failure_data, class_id):
               f"False Negatives: {len(failure_data['false_negatives'])}")
     plt.axis('off')
     plt.show()
-
-# def analyze_run(run_dir):
-#     """Analyze failures from a run"""
-#     run_dir = Path(run_dir)
-    
-#     # Load failures and metrics
-#     with open(run_dir / 'failures.json', 'r') as f:
-#         failures = json.load(f)
-#     with open(run_dir / 'metrics.json', 'r') as f:
-#         metrics = json.load(f)
-        
-#     return failures, metrics

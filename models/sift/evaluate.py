@@ -12,27 +12,25 @@ class DetectorEvaluator:
         """Evaluate detector performance and save results"""
         logger.info(f"Starting evaluation run: {run_name}")
         
-        # Initialize statistics
         class_stats = defaultdict(lambda: {"tp": 0, "fp": 0, "fn": 0, "iou_scores": []})
         failures = defaultdict(lambda: {"false_positives": [], "false_negatives": [], "low_iou": []})
 
-        # Evaluation loop
+        # EVAL LOOP
         for img_data in imgs:
             img_id = img_data["id"]
             img_path = img_data["file_name"]
             
-            # Load and process image
             img = cv2.imread(img_path)
             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             
-            # Get ground truth and detections
+            # GT
             gt_bboxes = defaultdict(list)
             for ann in annotations.get(img_id, []):
                 gt_bboxes[ann["category_id"]].append(ann["bbox"])
                 
             detected_bboxes = detector_fn(img_gray)
             
-            # Evaluate each class
+            # FOR EACH, EVAL
             for class_id, gt_boxes in gt_bboxes.items():
                 detected_boxes = detected_bboxes.get(class_id, [])
                 matched = set()
@@ -53,13 +51,12 @@ class DetectorEvaluator:
                         class_stats[class_id]["fp"] += 1
                         failures[img_id]["false_positives"].append(det_box)
                 
-                # Count false negatives
                 for gt_box in gt_boxes:
                     if tuple(gt_box) not in matched:
                         class_stats[class_id]["fn"] += 1
                         failures[img_id]["false_negatives"].append(gt_box)
         
-        # Calculate metrics
+        # METRICS
         metrics = {}
         for class_id, stats in class_stats.items():
             precision = stats["tp"] / (stats["tp"] + stats["fp"] + 1e-6)
@@ -76,7 +73,6 @@ class DetectorEvaluator:
             
             logger.info(f"Class {class_id}: Precision={precision:.3f}, Recall={recall:.3f}, F1={f1:.3f}")
         
-        # Save results
         run_dir = save_run_results(metrics, failures, run_name)
         logger.info(f"Results saved to: {run_dir}")
         
